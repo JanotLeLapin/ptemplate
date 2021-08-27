@@ -1,0 +1,6 @@
+name: plugin-template
+api-version: 1.8.8
+authors:
+  - JanotLeLapin
+main: fr.janotlelapin.ptemplate.MainPlugin
+version: 1.0
