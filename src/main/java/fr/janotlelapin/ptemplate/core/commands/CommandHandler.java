@@ -7,6 +7,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,13 +15,26 @@ public class CommandHandler {
     private static ArrayList<BaseCommand> commands = new ArrayList<>();
 
     public static void init(String packageName, MainPlugin plugin) {
-        Reflections reflections = new Reflections(packageName, new SubTypesScanner(false));
-        Set<Class<? extends BaseCommand>> commandClasses = reflections.getSubTypesOf(BaseCommand.class).stream().collect(Collectors.toSet());
+        final Reflections reflections = new Reflections(packageName, new SubTypesScanner(false));
+        final Set<Class<? extends BaseCommand>> commandClasses = new HashSet<>(reflections.getSubTypesOf(BaseCommand.class));
         commandClasses.forEach(command -> {
             try {
-                String cmdName = command.getName().toLowerCase().replace("cmd", "").replace(packageName + ".", "");
-                BaseCommand cmd = command.getDeclaredConstructor(String.class, MainPlugin.class).newInstance(cmdName, plugin);
-                ((CraftServer) plugin.getServer()).getCommandMap().register(cmd.getName(), cmd);
+                String cmdName = command.getName().replace(packageName + ".", "");
+                if (cmdName.endsWith("Cmd")) {
+                    cmdName = cmdName.substring(0, cmdName.length() - 3);
+                    if (cmdName.length() == 0) {
+                        plugin.log("§cCould not process command: Cmd, invalid name");
+                        return;
+                    }
+                } else {
+                    plugin.log("§6Warning: expected §e" + cmdName + " §6class name to end with \"Cmd\"");
+                }
+
+                final BaseCommand cmd = command.getDeclaredConstructor(String.class, MainPlugin.class).newInstance(cmdName.toLowerCase(), plugin);
+                if (((CraftServer) plugin.getServer()).getCommandMap().register(cmd.getName(), cmd))
+                    plugin.log("Registered command: §9" + cmdName);
+                else
+                    plugin.log("Could not register command: §c" + cmdName + "§r, already registered");
             } catch (Exception e) {
                 e.printStackTrace();
             }

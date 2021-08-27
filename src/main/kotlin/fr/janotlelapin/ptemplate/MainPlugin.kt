@@ -23,4 +23,8 @@ class MainPlugin : JavaPlugin() {
 
         server.consoleSender.sendMessage("§ePlugin enabled!")
     }
+
+    fun log(message: String) {
+        server.consoleSender.sendMessage(message)
+    }
 }
