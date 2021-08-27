@@ -25,6 +25,14 @@ dependencies {
     compileOnly("org.spigotmc", "spigot-api", "$minecraft-R0.1-SNAPSHOT")
     compileOnly("com.github.azbh111", "craftbukkit-1.8.8", "R")
     implementation("org.reflections", "reflections", "0.9.12")
+
+    testImplementation("org.mockito", "mockito-core", "3.11.2")
+    testImplementation("org.mockito", "mockito-inline", "3.11.2")
+    testImplementation("junit", "junit", "4.13")
+}
+
+configurations {
+    testImplementation.get().extendsFrom(compileOnly.get())
 }
 
 tasks {
