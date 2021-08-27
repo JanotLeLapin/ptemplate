@@ -8,9 +8,9 @@ PTemplate is a Spigot plugin template in Kotlin that abstracts a lot of stuff to
 
 ### 🧰 Features
 
-- [Advanced command handler](###Commands)
+- [Advanced command handler](##commands)
 - Custom Tab List
-- Unit testing
+- [Unit testing](##unit-testing)
 - Kotlin
 
 ## 📝 How to use
@@ -89,3 +89,74 @@ class SuperCoolCmd(name: String, plugin: MainPlugin) : BaseCommand<Player>(name,
 ```
 
 Congratulations, you just made a super cool command!
+
+## Unit testing
+
+Unit tests allow you to make sure your code does what it's supposed to do. I strongly recommend you to use unit tests if you're working on a big project, but it's up to you.\
+If you already know about unit tests, you won't need to read this section.
+
+### Test a listener
+
+In this section you'll learn how to test a listener that customizes player messages:
+
+```kotlin
+// SampleListener.kt
+@EventHandler
+fun onMessage(e: PlayerAsyncChatEvent) {
+  val player = e.player
+  val message = e.message
+
+  e.isCancelled = true
+  Bukkit.broadcastMessage("§7${player.name}§8: $message"
+}
+```
+
+First off, create the `SampleListenerTest` class in the `test/java` folder. If you're not sure where you should create it, check out the [SampleListenerTest](src/test/java/fr/janotlelapin/ptemplate/listeners/PlayerListenerTest.java) class.\
+The `SampleListenerTest` class should extend the [MainTest](src/test/java/fr/janotlelapin/ptemplate/MainTest.java) class which sets the test Bukkit server up for you.\
+You'll need an new instance of `SampleListener` before each unit test:
+
+```java
+public class SampleListener extends MainTest {
+  SampleListener listener;
+
+  @Before
+  public void setupListener() {
+    listener = new SampleListener();
+  }
+}
+```
+
+Now you can start writing actual tests. Putting it all together:
+
+```java
+public class SampleListener extends MainTest {
+  SampleListener listener;
+
+  @Before
+  public void setupListener() {
+    listener = new SampleListener();
+  }
+
+  @Test
+  public void onMessageTest() {
+    // Mock player with name "Janot"
+    Player p = Mockito.mock(Player.class);
+    when(p.getName()).thenReturn("Janot");
+
+    // Mock event
+    AsyncPlayerChatEvent e = Mockito.mock(AsyncPlayerChatEvent.class);
+    // Make event return custom player mock
+    when(e.getPlayer()).thenReturn(p);
+    // Make event return custom message
+    when(e.getMessage()).thenReturn("Hi there");
+
+    // Trigger the event
+    listener.onMessage(e);
+
+    // Verify that the event was cancelled
+    Mockito.verify(e, times(1)).setCancelled(eq(true));
+    // Verify that the message was broadcasted
+    b.verify(() -> Bukkit.broadcastMessage(eq("§7Janot§8: Hi there")), times(1));
+  }
+}
+```
