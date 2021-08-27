@@ -1,4 +1,4 @@
-package fr.fanotlelapin.ptemplate;
+package fr.janotlelapin.ptemplate;
 
 import static org.mockito.Mockito.*;
 

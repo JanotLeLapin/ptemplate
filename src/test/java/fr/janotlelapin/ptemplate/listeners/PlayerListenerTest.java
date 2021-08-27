@@ -1,10 +1,9 @@
-package fr.fanotlelapin.ptemplate.listeners;
+package fr.janotlelapin.ptemplate.listeners;
 
 import static org.mockito.Mockito.*;
 
-import fr.fanotlelapin.ptemplate.MainTest;
+import fr.janotlelapin.ptemplate.MainTest;
 import fr.janotlelapin.ptemplate.MainPlugin;
-import fr.janotlelapin.ptemplate.listeners.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
