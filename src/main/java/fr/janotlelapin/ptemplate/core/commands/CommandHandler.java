@@ -36,8 +36,10 @@ public class CommandHandler {
     }
 
     public static boolean canRun(CommandSender sender, BaseCommand command) {
-        if (command.isOp()) return sender.isOp();
-        if (!sender.hasPermission(command.getPermission())) return false;
+        String perm = command.getPermission();
+
+        if (command.isOp() && !sender.isOp()) return false;
+        if (perm != null && !sender.hasPermission(perm)) return false;
         return true;
     }
 
