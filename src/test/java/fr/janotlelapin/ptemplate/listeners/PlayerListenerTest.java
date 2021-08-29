@@ -1,5 +1,6 @@
 package fr.janotlelapin.ptemplate.listeners;
 
+import static fr.janotlelapin.ptemplate.mock.MockPlayer.mockPlayer;
 import static org.mockito.Mockito.*;
 
 import fr.janotlelapin.ptemplate.MainTest;
@@ -25,8 +26,7 @@ public class PlayerListenerTest extends MainTest {
     @Test
     public void onJoinTest() {
         // Mock a player
-        Player p = mock(Player.class);
-        when(p.getName()).thenReturn("Janot");
+        Player p = mockPlayer("Janot");
 
         // Mock a PlayerJoinEvent
         PlayerJoinEvent e = mock(PlayerJoinEvent.class);
