@@ -26,8 +26,8 @@ dependencies {
     compileOnly("com.github.azbh111", "craftbukkit-1.8.8", "R")
     implementation("org.reflections", "reflections", "0.9.12")
 
-    testImplementation("org.mockito", "mockito-core", "3.11.2")
-    testImplementation("org.mockito", "mockito-inline", "3.11.2")
+    testImplementation("org.mockito", "mockito-core", "3.12.4")
+    testImplementation("org.mockito", "mockito-inline", "3.12.4")
     testImplementation("junit", "junit", "4.13")
 }
 
