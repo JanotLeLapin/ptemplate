@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 public class CommandHandler {
     private static ArrayList<BaseCommand> commands = new ArrayList<>();
 
+    /**
+     * Initialize the command handler
+     * @param packageName The package which contains your command classes
+     * @param plugin
+     */
     public static void init(String packageName, MainPlugin plugin) {
         final Reflections reflections = new Reflections(packageName, new SubTypesScanner(false));
         final Set<Class<? extends BaseCommand>> commandClasses = new HashSet<>(reflections.getSubTypesOf(BaseCommand.class));
